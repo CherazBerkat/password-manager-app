@@ -16,12 +16,13 @@ async function createDatabase() {
     // Select the newly created database
     await connection.query("USE PASSWORD_MANAGER");
 
-    // Create a new table with the specified schema
+    // Create a new table with the specified schema, including the 'iv' column
     const createTableQuery = `
       CREATE TABLE IF NOT EXISTS Passwords (
         id INT AUTO_INCREMENT PRIMARY KEY,
         password VARCHAR(255) NOT NULL,
-        website VARCHAR(255) NOT NULL
+        website VARCHAR(255) NOT NULL,
+        iv VARCHAR(32) NOT NULL
       );
     `;
 
