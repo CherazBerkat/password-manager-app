@@ -18,14 +18,15 @@ router.post("/updatePassword", async (req, res) => {
     try {
       // Delete all existing records
       await connection.query("DELETE FROM Passwords");
-
+      let encrypted;
       // Prepare and execute insert statements
-      const insertPromises = data.map((data) =>
+      const insertPromises = data.map((data) => {
+        encrypted = encrypt(data.pw);
         connection.query(
           "INSERT INTO Passwords (password, website,iv) VALUES (?, ?, ?)",
-          [encrypt(data.pw).password, data.platform, encrypt(data.pw).iv]
-        )
-      );
+          [encrypted.password, data.platform, encrypted.iv]
+        );
+      });
       await Promise.all(insertPromises);
 
       // Commit the transaction
